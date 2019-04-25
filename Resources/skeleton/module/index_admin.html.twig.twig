@@ -1,0 +1,11 @@
+{% verbatim %}{% extends '@CMS/Admin/module.html.twig' %}
+
+{% block title %}{{ '{% endverbatim %}{{ bundle_basename_camelize }}{% verbatim %}'|trans }} / {{ parent() }}{% endblock %}
+
+{% block content %}
+
+    <h2>{{ '{% endverbatim %}{{ bundle_basename_camelize }}{% verbatim %}'|trans }}</h2>
+
+    {#{{ form(form, {'attr': {'class': 'form-horizontal well'}} ) }}#}
+
+{% endblock content %}{% endverbatim %}

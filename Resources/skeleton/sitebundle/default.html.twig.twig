@@ -1,0 +1,34 @@
+{% verbatim %}{% extends '@Html/base.html.twig' %}
+
+{% set use_libs = {
+    'bootstrap': '3',
+} %}
+
+{% block title %}{{ cms_html_title() }}{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+{% endblock meta %}
+
+{% block styles %}
+    {{ parent() }}
+    <style media="all" type="text/css">
+        @import url({{ asset('bundles/cms/css/bootstrap-theme-smart-core.css') }});
+    </style>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    {% include '@SmartCore/flash_messages.html.twig' %}
+
+    <div id="content">
+        {% block content content %}
+    </div>
+
+</div>
+{% endblock body %}{% endverbatim %}

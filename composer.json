@@ -1,0 +1,12 @@
+{
+    "name": "monolith-monolith/cms-generator-bundle",
+    "description" : "Modules and Sites code generator for Monolith CMS",
+    "type": "symfony-bundle",
+    "homepage": "http://monolith-cms.com",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Monolith\\Bundle\\CMSGeneratorBundle\\": ""
+        }
+    }
+}
