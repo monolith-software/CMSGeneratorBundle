@@ -1,5 +1,5 @@
 {
-    "name": "monolith-monolith/cms-generator-bundle",
+    "name": "monolith-software/cms-generator-bundle",
     "description" : "Modules and Sites code generator for Monolith CMS",
     "type": "symfony-bundle",
     "homepage": "http://monolith-cms.com",
