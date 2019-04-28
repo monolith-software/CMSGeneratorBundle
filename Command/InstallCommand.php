@@ -7,6 +7,7 @@ use Monolith\Bundle\CMSBundle\Entity\Site;
 use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
@@ -24,6 +25,10 @@ class InstallCommand extends ContainerAwareCommand
         $this
             ->setDescription('Monolith CMS clean installer')
             ->setName('cms:install')
+            ->addOption('sitename', 's', InputOption::VALUE_OPTIONAL, 'Site name [My]')
+            ->addOption('username', 'u', InputOption::VALUE_OPTIONAL, 'Username [root]')
+            ->addOption('email',   null, InputOption::VALUE_OPTIONAL, 'Email [root@world.com]')
+            ->addOption('password',null, InputOption::VALUE_OPTIONAL, 'Password [123]')
         ;
     }
 
@@ -35,6 +40,8 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        dump($input->getOption('no-interaction'));
+
         $appDir = realpath($this->getContainer()->get('kernel')->getRootDir());
         $binDir = 'bin';
 
@@ -44,19 +51,37 @@ class InstallCommand extends ContainerAwareCommand
             $dialog     = $this->getQuestionHelper();
             $filesystem = new Filesystem();
 
-            $output->writeln('<error>Installing Monolith CMS. This prosess purge all database tables.</error>');
-            $confirm = $dialog->ask($input, $output, new Question('<comment>Are you shure?</comment> [y,N]: ', 'n'));
+            if (!$input->getOption('no-interaction')) {
+                $output->writeln('<error>Installing Monolith CMS. This prosess purge all database tables.</error>');
+                $confirm = $dialog->ask($input, $output, new Question('<comment>Are you shure?</comment> [y,N]: ', 'n'));
 
-            if (strtolower($confirm) !== 'y') {
-                $output->writeln('<info>Abort.</info>');
+                if (strtolower($confirm) !== 'y') {
+                    $output->writeln('<info>Abort.</info>');
 
-                return false;
+                    return false;
+                }
             }
 
-            $sitename = $dialog->ask($input, $output, new Question('<comment>Site name</comment> [My]: ', 'My'));
-            $username = $dialog->ask($input, $output, new Question('<comment>Username</comment> [root]: ', 'root'));
-            $email    = $dialog->ask($input, $output, new Question('<comment>Email</comment> [root@world.com]: ', 'root@world.com'));
-            $password = $dialog->ask($input, $output, new Question('<comment>Password</comment> [123]: ', '123'));
+            $sitename = $input->getOption('sitename');
+            $username = $input->getOption('username');
+            $email    = $input->getOption('email');
+            $password = $input->getOption('password');
+
+            if (empty($sitename)) {
+                $sitename = $dialog->ask($input, $output, new Question('<comment>Site name</comment> [My]: ', 'My'));
+            }
+
+            if (empty($username)) {
+                $username = $dialog->ask($input, $output, new Question('<comment>Username</comment> [root]: ', 'root'));
+            }
+
+            if (empty($email)) {
+                $email    = $dialog->ask($input, $output, new Question('<comment>Email</comment> [root@world.com]: ', 'root@world.com'));
+            }
+
+            if (empty($password)) {
+                $password = $dialog->ask($input, $output, new Question('<comment>Password</comment> [123]: ', '123'));
+            }
 
             static::executeCommand($output, $binDir, 'doctrine:schema:drop --force');
             static::executeCommand($output, $binDir, 'cms:generate:sitebundle --name='.$sitename);
