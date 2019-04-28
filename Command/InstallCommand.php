@@ -139,6 +139,15 @@ class InstallCommand extends ContainerAwareCommand
                 $em->persist($site);
                 $em->flush($site);
             }
+
+            $skeletonComposerJson = 'vendor/monolith-software/cms-generator-bundle/Resources/composer.json';
+
+            if (!file_exists($skeletonComposerJson)) {
+                $skeletonComposerJson = 'src/Monolith/Bundle/CMSGeneratorBundle/Resources/composer.json';
+            }
+
+            $process = new Process("cp $skeletonComposerJson composer.json");
+            $process->mustRun();
         }
 
         return null;
