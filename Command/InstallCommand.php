@@ -40,8 +40,6 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        dump($input->getOption('no-interaction'));
-
         $appDir = realpath($this->getContainer()->get('kernel')->getRootDir());
         $binDir = 'bin';
 
