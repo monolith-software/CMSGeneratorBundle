@@ -2,6 +2,8 @@
 
 namespace Monolith\Bundle\CMSGeneratorBundle\Command;
 
+use Monolith\Bundle\CMSBundle\Entity\Language;
+use Monolith\Bundle\CMSBundle\Entity\Site;
 use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -77,6 +79,43 @@ class InstallCommand extends ContainerAwareCommand
             $output->writeln('<comment>Create super admin user:</comment>');
 
             static::executeCommand($output, $binDir, "fos:user:create --super-admin $username $email $password");
+
+            // Создание языка, домена и сайта в БД.
+
+            /** @var \Doctrine\ORM\EntityManager $em */
+            $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+            //$user = $em->getRepository('SiteBundle:User')->findOneBy(['username' => $username]);
+            $user = $this->getContainer()->get('cms.context')->getUserManager()->findUserBy(['username' => $username]);
+
+            $locale = $this->getContainer()->getParameter('locale');
+
+            $language = $em->getRepository('CMSBundle:Language')->findOneBy(['code' => $locale]);
+
+            if (empty($language)) {
+                $language = new Language();
+                $language
+                    ->setCode($locale)
+                    ->setName(mb_strtoupper($locale))
+                    ->setUser($user)
+                ;
+
+                $em->persist($language);
+                $em->flush($language);
+            }
+
+            $site = $em->getRepository('CMSBundle:Site')->findOneBy([]);
+
+            if (empty($site)) {
+                $site = new Site($sitename);
+                $site
+                    ->setLanguage($language)
+                    ->setTheme('default')
+                ;
+
+                $em->persist($site);
+                $em->flush($site);
+            }
         }
 
         return null;
