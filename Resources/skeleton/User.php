@@ -7,12 +7,7 @@ use Monolith\Bundle\CMSBundle\Model\UserModel;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="users",
- *      indexes={
- *          @ORM\Index(columns={"firstname"}),
- *          @ORM\Index(columns={"lastname"})
- *      }
- * )
+ * @ORM\Table(name="users")
  */
 class User extends UserModel
 {
