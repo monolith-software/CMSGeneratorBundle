@@ -47,7 +47,7 @@ class ScriptHandler extends SymfonyScriptHandler
             $email    = $event->getIO()->ask(sprintf('<question>%s</question> (<comment>%s</comment>): ', 'Email', 'root@world.com'), 'root@world.com');
             $password = $event->getIO()->ask(sprintf('<question>%s</question> (<comment>%s</comment>): ', 'Password', '123'), '123');
 
-            $skeletonUserFile = 'vendor/monolith-cms/cms-generator-bundle/Resources/skeleton/User.php';
+            $skeletonUserFile = 'vendor/monolith-software/cms-generator-bundle/Resources/skeleton/User.php';
 
             if (!file_exists($skeletonUserFile)) {
                 $skeletonUserFile = 'src/Monolith/Bundle/CMSGeneratorBundle/Resources/skeleton/User.php';
