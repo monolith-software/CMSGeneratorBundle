@@ -56,15 +56,17 @@ class InstallCommand extends ContainerAwareCommand
             $email    = $dialog->ask($input, $output, new Question('<comment>Email</comment> [root@world.com]: ', 'root@world.com'));
             $password = $dialog->ask($input, $output, new Question('<comment>Password</comment> [123]: ', '123'));
 
-            $userEntityFilePath = $this->getContainer()->get('kernel')->getBundle('CMSGeneratorBundle')->getPath().'/Resources/skeleton/User.php';
+//            $userEntityFilePath = $this->getContainer()->get('kernel')->getBundle('CMSGeneratorBundle')->getPath().'/Resources/skeleton/User.php';
 
-            $process = new Process("cp $userEntityFilePath app/Entity/User.php");
-            $process->mustRun();
+//            $process = new Process("cp $userEntityFilePath app/Entity/User.php");
+//            $process->mustRun();
 
             static::executeCommand($output, $binDir, 'doctrine:schema:drop --force');
             static::executeCommand($output, $binDir, 'cms:generate:sitebundle --name='.$sitename);
 
-            unlink($appDir.'/Entity/User.php');
+//            unlink($appDir.'/Entity/User.php');
+
+            $filesystem->remove('app/config/install.yml');
 
             $process = new Process('bash bin/clear_cache');
             $process->run(function ($type, $buffer) {
@@ -81,9 +83,9 @@ class InstallCommand extends ContainerAwareCommand
 
             static::executeCommand($output, $binDir, "fos:user:create --super-admin $username $email $password");
 
-            $filesystem->remove('app/config/install.yml');
-            $filesystem->remove('app/Entity/.keep');
-            $filesystem->remove('app/Entity');
+//            $filesystem->remove('app/config/install.yml');
+//            $filesystem->remove('app/Entity/.keep');
+//            $filesystem->remove('app/Entity');
         }
 
         return null;
