@@ -1,0 +1,12 @@
+imports:
+    - { resource: '@CMSBundle/Resources/config/security_access_control.yml' }
+    - { resource: security_access_control.yml, ignore_errors: true }
+
+security:
+    firewalls:
+        admin:
+            remember_me:
+                name: {{ bundle_basename|upper }}_REMEMBER_ME
+        main:
+            remember_me:
+                name: {{ bundle_basename|upper }}_REMEMBER_ME

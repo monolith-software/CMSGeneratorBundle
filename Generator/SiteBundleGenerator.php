@@ -53,6 +53,8 @@ class SiteBundleGenerator extends Generator
 
         $this->renderFile('sitebundle/modules.ini.twig', $dir.'/Resources/config/modules.ini', $parameters);
         $this->renderFile('sitebundle/config.yml.twig', $dir.'/Resources/config/config.yml', $parameters);
+        $this->renderFile('sitebundle/security.yml.twig', $dir.'/Resources/config/security.yml', $parameters);
+        $this->renderFile('sitebundle/security_access_control.yml.twig', $dir.'/Resources/config/_security_access_control.yml', $parameters);
         $this->renderFile('sitebundle/routing.'.$format.'.twig', $dir.'/Resources/config/routing.'.$format, $parameters);
         $this->renderFile('module/services.'.$format.'.twig', $dir.'/Resources/config/services.'.$format, $parameters);
         $this->renderFile('module/settings.yml.twig', $dir.'/Resources/config/settings.yml', $parameters);
