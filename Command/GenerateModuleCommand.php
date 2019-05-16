@@ -171,7 +171,7 @@ class GenerateModuleCommand extends GeneratorCommand
         }
 
         if (null === $dir) {
-            $dir = dirname($this->getContainer()->getParameter('kernel.root_dir')).'/src';
+            $dir = dirname($this->getContainer()->getParameter('kernel.project_dir')).'/src';
 
             $output->writeln([
                 '',

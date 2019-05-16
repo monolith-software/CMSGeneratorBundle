@@ -46,7 +46,7 @@ class GenerateSiteBundleCommand extends GeneratorCommand
 
         $name = ucfirst($name);
 
-        $dir = dirname($this->getContainer()->getParameter('kernel.root_dir')).'/src';
+        $dir = dirname($this->getContainer()->getParameter('kernel.project_dir')).'/src';
         $format = 'yml';
         $structure = 'no';
 
